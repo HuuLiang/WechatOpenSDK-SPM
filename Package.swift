@@ -4,23 +4,35 @@
 import PackageDescription
 
 let package = Package(
-    name: "WechatOpenSDK-SPM",
+    name: "WechatOpenSDK",
+    platforms: [
+        .iOS(.v13)
+    ],
     products: [
-        // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
-            name: "WechatOpenSDK-SPM",
-            targets: ["WechatOpenSDK-SPM"]
+            name: "WechatOpenSDK",
+            targets: ["WechatOpenSDK"]
         ),
     ],
     targets: [
-        // Targets are the basic building blocks of a package, defining a module or a test suite.
-        // Targets can depend on other targets in this package and products from dependencies.
+        .binaryTarget(
+            name: "WechatOpenSDKBinary",
+            path: "Frameworks/WechatOpenSDK.xcframework"
+        ),
         .target(
-            name: "WechatOpenSDK-SPM"
+            name: "WechatOpenSDK",
+            dependencies: [
+                "WechatOpenSDKBinary"
+            ],
+            linkerSettings: [
+                .linkedFramework("Security"),
+                .linkedFramework("CoreGraphics"),
+                .linkedFramework("WebKit")
+            ]
         ),
         .testTarget(
-            name: "WechatOpenSDK-SPMTests",
-            dependencies: ["WechatOpenSDK-SPM"]
+            name: "WechatOpenSDKTests",
+            dependencies: ["WechatOpenSDK"]
         ),
     ]
 )
